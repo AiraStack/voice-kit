@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import java.util.*
+import android.view.View
+import androidx.lifecycle.ViewModelProvider
 
 /**
  * 主活动类，负责处理用户界面和语音识别/合成的交互
@@ -72,6 +74,32 @@ class MainActivity : AppCompatActivity() {
         // 设置观察者和点击监听器
         setupObservers()
         setupClickListeners()
+
+        // 观察识别文本变化
+        viewModel.recognizedText.observe(this) { text ->
+            resultText.text = text
+        }
+
+        // 观察大字体显示文本变化
+        viewModel.displayText.observe(this) { text ->
+            val displayTextView = findViewById<TextView>(R.id.displayText)
+            if (text.isNotEmpty()) {
+                displayTextView.text = text
+                displayTextView.visibility = View.VISIBLE
+            } else {
+                displayTextView.visibility = View.GONE
+            }
+        }
+
+        // 观察语音识别状态的变化
+        viewModel.isListening.observe(this) { isListening ->
+            startRecognitionButton.isEnabled = !isListening
+        }
+
+        // 观察语音合成状态的变化
+        viewModel.ttsStatus.observe(this) { isReady ->
+            speakButton.isEnabled = isReady
+        }
     }
 
     /**
@@ -81,6 +109,17 @@ class MainActivity : AppCompatActivity() {
         // 观察识别文本的变化
         viewModel.recognizedText.observe(this) { text ->
             resultText.text = text
+        }
+
+        // 观察大字体显示文本变化
+        viewModel.displayText.observe(this) { text ->
+            val displayTextView = findViewById<TextView>(R.id.displayText)
+            if (text.isNotEmpty()) {
+                displayTextView.text = text
+                displayTextView.visibility = View.VISIBLE
+            } else {
+                displayTextView.visibility = View.GONE
+            }
         }
 
         // 观察语音识别状态的变化

@@ -18,6 +18,19 @@
         android:gravity="top"
         android:hint="识别结果将显示在这里" />
 
+    <!-- 大字体显示文本 -->
+    <TextView
+        android:id="@+id/displayText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
+        android:gravity="center"
+        android:text="识别结果将显示在这里" />
+
     <!-- 按钮容器：水平方向的线性布局 -->
     <LinearLayout
         android:layout_width="match_parent"

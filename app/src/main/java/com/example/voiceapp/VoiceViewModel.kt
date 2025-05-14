@@ -24,6 +24,10 @@ class VoiceViewModel(application: Application) : AndroidViewModel(application), 
     private val _ttsStatus = MutableLiveData<Boolean>()
     val ttsStatus: LiveData<Boolean> = _ttsStatus
 
+    // 大字体显示文本的 LiveData
+    private val _displayText = MutableLiveData<String>()
+    val displayText: LiveData<String> = _displayText
+
     // 语音合成引擎
     private var textToSpeech: TextToSpeech? = null
 
@@ -49,11 +53,27 @@ class VoiceViewModel(application: Application) : AndroidViewModel(application), 
     }
 
     /**
-     * 更新识别文本
+     * 更新识别文本并处理语音助手响应
      * @param text 识别到的文本
      */
     fun updateRecognizedText(text: String) {
         _recognizedText.value = text
+        
+        // 检查是否包含唤醒词"小豆"
+        if (text.contains("小豆")) {
+            // 语音回复"在的"
+            speakText("在的")
+        }
+        
+        // 检查是否包含"放投影"
+        if (text.contains("放投影")) {
+            _displayText.value = "投影"
+        }
+        
+        // 检查是否包含"拍照"
+        if (text.contains("拍照")) {
+            _displayText.value = "拍照"
+        }
     }
 
     /**
